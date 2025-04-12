@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CoinDCX Trading Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>CoinDCX Simple Trading</h2>
+        <input id="symbol" placeholder="Enter symbol (e.g., BTCINR)" />
+        <input id="quantity" placeholder="Enter quantity" />
+        <button onclick="openTrade()">Open Trade</button>
+        <button onclick="closeTrade()">Close Trade</button>
+        <pre id="responseBox"></pre>
+    </div>
+
+    <script>
+        async function openTrade() {
+            const symbol = document.getElementById("symbol").value;
+            const quantity = parseFloat(document.getElementById("quantity").value);
+
+            const res = await fetch('/open_trade', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbol, quantity })
+            });
+            const data = await res.json();
+            document.getElementById("responseBox").textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function closeTrade() {
+            const symbol = document.getElementById("symbol").value;
+            const quantity = parseFloat(document.getElementById("quantity").value);
+
+            const res = await fetch('/close_trade', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symbol, quantity })
+            });
+            const data = await res.json();
+            document.getElementById("responseBox").textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
